@@ -1,0 +1,356 @@
+# Project: CSV Data Cleaning Automation
+
+[Clean excel, remove duplicates, fix formatting, python by Danielsinurat77 | Fiverr](https://images.openai.com/static-rsc-4/e-RKvHYRDqdfYRQpII2GVBiYbOgNdV4qyMhTa4mz0HEfZ7Rn5JVoT6rXu8IRrBtaL23E6d6GqVlx308FTVRBOBPvBz851uoPT-5HMeengTgJCr9xyeOiBZYio2d55QsUFyY98_TXKKak_PIYOauWmzrL2FhJObsecRBKvyGVoAM?purpose=inline)
+
+[fiverr.com](https://fiverr.com/danielsinurat77/clean-merge-and-organize-your-messy-excel-or-csv-data-using-python?utm_source=chatgpt.com)
+
+
+Project Objective: একটি অপরিষ্কার Customer CSV ফাইলকে স্বয়ংক্রিয়ভাবে পরিষ্কার করে নতুন CSV ফাইল তৈরি করা এবং কাজের একটি JSON Report তৈরি করা।
+
+## ১. Client Requirement (ক্লায়েন্টের চাহিদা)
+
+ধরো, একজন E-commerce ব্যবসার মালিক তোমাকে ১,০০০ জন Customer-এর CSV ফাইল দিয়েছেন।
+
+তার ফাইলে কিছু সমস্যা রয়েছে:
+
+1. একই Customer একাধিকবার আছে।
+2. কিছু Customer-এর Email Address নেই।
+3. কিছু Email Address ভুল।
+4. Name-এর শুরুতে ও শেষে অপ্রয়োজনীয় Space আছে।
+5. Name-এর Capitalization ঠিক নেই।
+6. Phone Number-এর মধ্যে অপ্রয়োজনীয় Space বা Special Character আছে।
+7. কিছু Row-তে প্রয়োজনীয় তথ্য অসম্পূর্ণ।
+
+ক্লায়েন্ট চান, তুমি একটি Python Script তৈরি করবে, যেটি স্বয়ংক্রিয়ভাবে এসব সমস্যা শনাক্ত ও সমাধান করবে।
+
+## ২. Project-এর Input ও Expected Output
+
+Input CSV: `customers.csv`
+
+নিচের Sample Data দিয়ে কাজ শুরু করবে।
+
+```
+customer_id,name,email,phone,city
+101, jahid hasan ,jahid@gmail.com,01712-345678,Dhaka
+102,RAHIM AHMED,rahim@gmail.com,01812 345678,Chittagong
+103,Karim Uddin,invalid-email,01912345678,Dhaka
+104,Sara Akter,,01612345678,Khulna
+105, jahid hasan ,jahid@gmail.com,01712-345678,Dhaka
+106,  nusrat jahan,nusrat@gmail.com,01512345678,Sylhet
+107,Imran Hossain,imran@gmail.com,01712345678,Dhaka
+108,Tanvir Hasan,tanvir@gmail.com,01812345678,
+109,Mahmudul Islam,mahmud@gmail.com,01912345678,Rajshahi
+110,   ,empty@gmail.com,01612345678,Barisal
+```
+
+এখানে ইচ্ছাকৃতভাবে বিভিন্ন ধরনের সমস্যা রাখা হয়েছে।
+
+তোমার প্রোগ্রামের Expected Output:
+
+## Output Folder
+
+output/
+
+clean_customers.csv
+invalid_customers.csv
+cleaning_report.json
+cleaning_log.txt
+
+নিয়ম:
+
+- Duplicate Customer বাদ দিতে হবে।
+- Invalid Email এবং Empty Name/Email শনাক্ত করতে হবে।
+- Valid Data পরিষ্কার করে Save করতে হবে।
+- Invalid Data আলাদা ফাইলে রাখতে হবে।
+- Original CSV কখনো পরিবর্তন করা যাবে না।
+
+একটি গুরুত্বপূর্ণ বিষয়: একই Customer-এর Duplicate Row শনাক্ত করতে `customer_id` ব্যবহার করবে। শুধু Name দিয়ে Duplicate ধরবে না।
+
+## ৩. Project Folder Structure
+
+প্রথমে তোমার কম্পিউটারে একটি Folder তৈরি করো:
+========================================================================
+input data
+Clean data
+valid invalid check
+ if invalid > write in csv
+ if valid
+ check duplicate
+  if duplicate > write in csv
+  if unique > write in csv
+extract report in JSON
+cleaning log
+========================================================================
+```
+CSV_Data_Cleaner/
+│
+├── input/
+│   └── customers.csv
+│
+├── output/
+│   ├── clean_customers.csv
+|   ├── duplicate_records.csv
+│   ├── invalid_customers.csv
+│   ├── cleaning_report.json
+│   └── cleaning_log.txt
+│
+├── src/
+│   ├── __init__.py
+│   ├── cleaner.py
+│   ├── validator.py
+│   └── reporter.py
+│
+├── main.py
+├── config.json
+└── README.md
+```
+
+প্রতিটি ফাইলের কাজ:
+
+| File           | কাজ                                  |
+| -------------- | ------------------------------------ |
+| `main.py`      | পুরো প্রোগ্রাম চালাবে                |
+| `cleaner.py`   | Data Clean করবে                      |
+| `validator.py` | Email ও প্রয়োজনীয় Data Validate করবে |
+| `reporter.py`  | JSON Report তৈরি করবে                |
+| `config.json`  | Project Configuration রাখবে          |
+| `README.md`    | Project Documentation                |
+
+এভাবে কোড ভাগ করলে তোমার Modules, Packages, Functions এবং OOP-এর জ্ঞানও কাজে লাগবে।
+
+## ৪. Data Cleaning Rules
+
+ক্লায়েন্টের কাজ করার সময় নিজের ইচ্ছামতো Data পরিবর্তন করা যাবে না। তাই আমাদের Cleaning Rules আগে নির্ধারণ করতে হবে।
+
+| Field       | Cleaning Rules                            |
+| ----------- | ----------------------------------------- |
+| customer_id | খালি রাখা যাবে না                         |
+| name        | Extra Space Remove, Title Case            |
+| email       | Lowercase, Space Remove, Regex Validation |
+| phone       | শুধু Digit রাখা                           |
+| city        | Extra Space Remove, Title Case            |
+
+উদাহরণ:
+
+| Before            | After             |
+| ----------------- | ----------------- |
+| `jahid hasan`     | `Jahid Hasan`     |
+| `RAHIM AHMED`     | `Rahim Ahmed`     |
+| `JAHID@GMAIL.COM` | `jahid@gmail.com` |
+| `01712-345678`    | `01712345678`     |
+| `01812 345678`    | `01812345678`     |
+
+Phone Number-কে অবশ্যই String হিসেবে রাখবে, Integer হিসেবে নয়। কারণ বাংলাদেশের ফোন নম্বরের শুরুতে `0` থাকে।
+
+Validation Rules:
+
+- Empty Name → Invalid
+- Empty Email → Invalid
+- Wrong Email Format → Invalid
+- Empty City → Warning, কিন্তু Row বাদ যাবে না।
+- Duplicate Customer ID → Duplicate হিসেবে আলাদা শনাক্ত করবে।
+
+আমরা প্রথমে Data Clean করব, এরপর Duplicate শনাক্ত করব, তারপর Validation করব।
+
+## ৫. কোন Module কোথায় ব্যবহার করবে?
+
+এটাই তোমার শেখা বিষয়গুলোর বাস্তব প্রয়োগ।
+
+| Module / Concept     | ব্যবহার                           |
+| -------------------- | --------------------------------- |
+| `csv`                | CSV Read এবং Write                |
+| `re`                 | Email Validation ও Phone Cleaning |
+| `json`               | Cleaning Report তৈরি              |
+| `datetime`           | Report-এর Date ও Time             |
+| `os`                 | Folder তৈরি ও Path Management     |
+| `shutil`             | Backup তৈরি                       |
+| `pathlib`            | File Path Management              |
+| `glob`               | Multiple CSV খোঁজা                |
+| `list comprehension` | Data Filtering                    |
+| `functions`          | কোড ছোট ছোট কাজে ভাগ              |
+| `exception handling` | File Error ও Invalid Data Handle  |
+| `OOP`                | Cleaner Class তৈরি                |
+
+একটি কথা: সব Module জোর করে ব্যবহার করার দরকার নেই। যে Module যে কাজে উপযুক্ত, সেটিই ব্যবহার করবে।
+
+## ৬. Project-এর ধাপে ধাপে Development Plan
+
+আমরা ৮টি ধাপে প্রজেক্টটি তৈরি করব।
+
+1. Step 1: CSV File Read করা
+   - CSV File Open করা।
+   - Header Read করা।
+   - প্রতিটি Row Dictionary হিসেবে Read করা।
+   - Total Records Count করা।
+   প্রথমে এটি শিখবে
+2. Step 2: Data Cleaning
+   - Name-এর Extra Space Remove।
+   - Name Title Case করা।
+   - Email Lowercase করা।
+   - Phone Number Clean করা।
+3. Step 3: Duplicate Detection
+   - Duplicate Customer ID খুঁজে বের করা।
+   - Duplicate Row আলাদা রাখা।
+   - Original Row সংরক্ষণ করা।
+4. Step 4: Data Validation
+   - Email Regex দিয়ে Validate করা।
+   - Empty Name শনাক্ত করা।
+   - Empty Email শনাক্ত করা।
+   - Missing City Warning তৈরি করা।
+5. Step 5: CSV Export
+   - Clean Data CSV-তে Save।
+   - Invalid Data CSV-তে Save।
+   - Duplicate Data আলাদা রাখা।
+6. Step 6: JSON Report
+   - Total Records।
+   - Valid Records।
+   - Invalid Records।
+   - Duplicate Records।
+   - Cleaning Date ও Time।
+7. Step 7: Exception Handling & Logging
+   - File Not Found।
+   - Permission Error।
+   - Invalid CSV।
+   - Empty CSV।
+   - কাজের Log তৈরি।
+8. Step 8: Final Testing
+   - Sample Data দিয়ে Test।
+   - ভুল Data দিয়ে Test।
+   - Output যাচাই।
+   - README তৈরি।
+
+## ৭. Final Report কেমন হবে?
+
+তোমার `cleaning_report.json` ফাইলে এমন একটি রিপোর্ট তৈরি করতে হবে:
+
+```
+{
+    "project": "CSV Data Cleaner",
+    "total_records": 10,
+    "cleaned_records": 6,
+    "invalid_records": 3,
+    "duplicate_records": 1,
+    "invalid_emails": 1,
+    "empty_emails": 1,
+    "empty_names": 1,
+    "missing_cities": 1,
+    "cleaning_status": "completed"
+}
+```
+
+এখানে `invalid_records`-এ তিনটি Row আছে। `missing_cities` আলাদা Warning, তাই সেটি Invalid Record-এর মধ্যে গণনা করা হবে না।
+
+এটি তোমার Expected Report। কোডের মাধ্যমে এই ফলাফল তৈরি করতে হবে।
+
+# ৮. Project Setup: কী কী Install করতে হবে?
+
+ভালো খবর, এই Project-এর জন্য কোনো External Python Library Install করতে হবে না।
+
+Python-এর Built-in Modules দিয়েই সম্পূর্ণ প্রজেক্ট তৈরি করা সম্ভব।
+
+প্রয়োজন:
+
+- Python 3.10 বা তার পরের Version
+- VS Code অথবা PyCharm
+- Terminal / Command Prompt
+
+প্রথমে Terminal-এ চেক করো:
+
+```
+python --version
+```
+
+এরপর Project Folder-এ প্রবেশ করো:
+
+```
+cd CSV_Data_Cleaner
+```
+
+প্রোগ্রাম চালানোর Command হবে:
+
+```
+python main.py
+```
+
+# ৯. তোমার প্রথম Coding Assignment
+
+আমি চাই না এখনই তোমাকে পুরো Project-এর Code দিয়ে দিই। তাহলে তোমার শেখা হবে কম।
+
+আমরা একজন Senior Python Developer যেভাবে Junior Developer-কে Task দেয়, সেভাবে কাজ করব।
+
+Assignment 01
+
+Start Here
+
+# CSV File Reader
+
+তোমার কাজ:
+
+1. `input` Folder থেকে `customers.csv` Read করবে।
+2. CSV-এর প্রতিটি Row Dictionary হিসেবে Read করবে।
+3. প্রতিটি Customer-এর Name, Email ও Phone Print করবে।
+4. Total Customer Count করবে।
+5. File না পাওয়া গেলে Exception Handle করবে।
+
+শর্ত:
+
+- `csv` Module ব্যবহার করতে হবে।
+- `with open()` ব্যবহার করতে হবে।
+- `csv.DictReader()` ব্যবহার করতে হবে।
+- একটি Function তৈরি করতে হবে।
+- `try-except` ব্যবহার করতে হবে।
+
+  Expected Terminal Output:
+
+```
+CSV Data Cleaning Automation
+----------------------------
+
+Customer: jahid hasan
+Email: jahid@gmail.com
+Phone: 01712-345678
+
+Customer: RAHIM AHMED
+Email: rahim@gmail.com
+Phone: 01812 345678
+
+...
+
+Total Records: 10
+
+CSV File Read Successfully!
+```
+
+এটি শুধু Expected Output-এর নমুনা।
+
+## ১০. Assignment জমা দেওয়ার আগে Checklist
+
+Assignment Progress
+
+## 0%
+
+Project Folder তৈরি করেছি
+
+customers.csv তৈরি করেছি
+
+CSV ফাইল Read করতে পারছি
+
+DictReader ব্যবহার করেছি
+
+Function তৈরি করেছি
+
+Exception Handling করেছি
+
+Total Records Count করতে পারছি
+
+আমাদের কাজের নিয়ম:
+
+1. তুমি Assignment 01 নিজে তৈরি করবে।
+2. তোমার `main.py`-এর Code এখানে পাঠাবে।
+3. আমি একজন Code Reviewer-এর মতো তোমার Code Review করব।
+4. ভুল থাকলে কেন ভুল হয়েছে বুঝিয়ে দেব।
+5. তারপর Assignment 02: Data Cleaning শুরু করব।
+
+আমাদের লক্ষ্য শুধু এই Project শেষ করা নয়; বরং তুমি যেন ভবিষ্যতে Upwork-এর কোনো Client-এর CSV Data Cleaning-এর কাজ নিজে করতে পারো।
+
+এখন Assignment 01 শুরু করো। তোমার লেখা Code পাঠাও, আমরা একসঙ্গে Review করব। 🐍
