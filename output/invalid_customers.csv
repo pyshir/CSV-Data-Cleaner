@@ -1,0 +1,4 @@
+customer_id,name,email,phone,city
+103,Karim Uddin,,01912345678,Dhaka
+104,Sara Akter,,01612345678,Khulna
+110,,empty@gmail.com,01612345678,Barisal

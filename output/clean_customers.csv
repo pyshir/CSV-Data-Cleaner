@@ -1,0 +1,8 @@
+customer_id,name,email,phone,city,status
+101,Jahid Hasan,jahid@gmail.com,01712-345678,Dhaka,Valid
+102,Rahim Ahmed,rahim@gmail.com,01812 345678,Chittagong,Valid
+105,Jahid Hasan,jahid@gmail.com,01712-345678,Dhaka,Valid
+106,Nusrat Jahan,nusrat@gmail.com,01512345678,Sylhet,Valid
+107,Imran Hossain,imran@gmail.com,01712345678,Dhaka,Valid
+108,Tanvir Hasan,tanvir@gmail.com,01812345678,,City is missing
+109,Mahmudul Islam,mahmud@gmail.com,01912345678,Rajshahi,Valid
